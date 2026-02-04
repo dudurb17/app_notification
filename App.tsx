@@ -63,6 +63,9 @@ function App() {
           break;
         case EventType.PRESS:
           console.log('Notification pressed', event?.detail?.notification);
+          console.log('Notification id', event?.detail?.notification?.id);
+          console.log('Notification body', event?.detail?.notification?.body);
+          console.log('Notification title', event?.detail?.notification?.title);
           break;
         default:
           break;
@@ -101,7 +104,7 @@ function App() {
       type: TriggerType.TIMESTAMP,
       timestamp: date.getTime(),
     };
-    await Notifee.createTriggerNotification(
+    const notification = await Notifee.createTriggerNotification(
       {
         title: 'Hello World in the future',
         body: 'This is a test notification',
@@ -115,7 +118,18 @@ function App() {
       },
       triggerNotification,
     );
+    console.log('Notification', notification);
   }
+
+  async function handleListNotifications() {
+    await Notifee.getTriggerNotificationIds().then(ids => {
+      console.log('Notifications', ids);
+    });
+  }
+
+  const handleCancelNotification = async (id: string) => {
+    await Notifee.cancelNotification(id);
+  };
 
   return (
     <SafeAreaProvider>
@@ -140,6 +154,20 @@ function App() {
           onPress={handleScheduleNotification}
         >
           <Text style={{ color: 'white' }}>Schedule Notification</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{ padding: 10, backgroundColor: 'red', borderRadius: 5 }}
+          onPress={handleListNotifications}
+        >
+          <Text style={{ color: 'white' }}>List Notifications</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{ padding: 10, backgroundColor: 'yellow', borderRadius: 5 }}
+          onPress={() => handleCancelNotification('ArtOlp7E5pR4NbXiHE4Y')}
+        >
+          <Text style={{ color: 'white' }}>Cancel Notification</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaProvider>
