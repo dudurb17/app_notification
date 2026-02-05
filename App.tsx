@@ -84,13 +84,14 @@ function App() {
       }
     }
     getNotifications();
-    updatePendingCount();
+    handleListNotifications();
   }, []);
 
-  const updatePendingCount = async () => {
+  async function handleListNotifications() {
     const ids = await Notifee.getTriggerNotificationIds();
+    console.log('Notifications', ids);
     setPendingCount(ids.length);
-  };
+  }
 
   Notifee.onBackgroundEvent(async (event: Event) => {
     if (event.type === EventType.DISMISSED) {
@@ -109,7 +110,7 @@ function App() {
       switch (event.type) {
         case EventType.DISMISSED:
         case EventType.PRESS:
-          updatePendingCount();
+          handleListNotifications();
           break;
         default:
           break;
@@ -156,7 +157,7 @@ function App() {
       },
       triggerNotification,
     );
-    await updatePendingCount();
+    await handleListNotifications();
   }
 
   async function handleScheduleWeeklyNotification() {
@@ -183,12 +184,12 @@ function App() {
       },
       trigger,
     );
-    await updatePendingCount();
+    await handleListNotifications();
   }
 
   const handleCancelNotificationAll = async () => {
     await Notifee.cancelAllNotifications();
-    await updatePendingCount();
+    await handleListNotifications();
   };
 
   const dynamicStyles = {
