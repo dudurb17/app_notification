@@ -88,9 +88,10 @@ function App() {
   }, []);
 
   async function handleListNotifications() {
-    const ids = await Notifee.getTriggerNotificationIds();
-    console.log('Notifications', ids);
-    setPendingCount(ids.length);
+    setTimeout(async () => {
+      const ids = await Notifee.getTriggerNotificationIds();
+      setPendingCount(ids.length);
+    }, 2000);
   }
 
   Notifee.onBackgroundEvent(async (event: Event) => {
