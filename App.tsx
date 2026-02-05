@@ -156,7 +156,7 @@ function App() {
       },
       triggerNotification,
     );
-    updatePendingCount();
+    await updatePendingCount();
   }
 
   async function handleScheduleWeeklyNotification() {
@@ -183,12 +183,12 @@ function App() {
       },
       trigger,
     );
-    updatePendingCount();
+    await updatePendingCount();
   }
 
   const handleCancelNotificationAll = async () => {
     await Notifee.cancelAllNotifications();
-    updatePendingCount();
+    await updatePendingCount();
   };
 
   const dynamicStyles = {
